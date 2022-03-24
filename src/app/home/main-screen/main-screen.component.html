@@ -1,0 +1,107 @@
+<mat-toolbar style="position:fixed">
+ 
+    <mat-icon>track_changes</mat-icon>
+    <span>Issue Tracker</span>
+    <span class="example-spacer"></span>
+    <mat-form-field  class="searchBar" appearance="outline">
+      <mat-label>Search For Issues</mat-label>
+      <input  matInput (keyup)="applyFilter($event)" placeholder="Search for issues" #input>
+    </mat-form-field>
+  
+    <button mat-raised-button color="warn" (click)="openDialog()">Add Issues</button>
+    <p style="margin-left:10px;margin-top: 15px;">{{titlename}}</p>
+    <button mat-icon-button [matMenuTriggerFor]="menu" class="example-icon" aria-label="Example icon-button with heart icon">
+        <mat-icon>account_circle</mat-icon>
+    </button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="logOut()">
+    <mat-icon matSuffix>logout</mat-icon>
+    Logout
+  </button>
+ 
+</mat-menu>
+
+   
+  </mat-toolbar>
+  
+  <div class="container">
+
+    <div [style.display]="this.Alldata.length === 0 ? '' : 'none' " >
+      <mat-icon style="font-size: 200px;margin: 100px 200px 200px 450px;opacity: 0.3;">note_add</mat-icon>
+    
+    </div>
+  <div [style.display]="this.Alldata.length === 0 ? 'none' : '' ">
+      <div  class="mat-elevation-z8">
+        <table  mat-table [dataSource]="dataSource" matSort>
+          <div >
+            <ng-container matColumnDef="image">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Images </th>
+              <td mat-cell  *matCellDef="let row">
+                <img src="https://angular-issue.herokuapp.com/{{row.image | slice:7:row.image.length}}" alt="image" style="height: 150px;width: 180px;padding: 10px;"> </td>
+  
+            </ng-container>
+          
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Title </th>
+              <td mat-cell *matCellDef="let row"> {{row.title}}</td>
+            </ng-container>
+        
+           
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Description </th>
+              <td style="word-break: break-all; padding-right: 30px;" mat-cell *matCellDef="let row"> {{row.description}} </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+              <td mat-cell *matCellDef="let row"><mat-chip-list> <mat-chip  [style.background]="row.status== 'Open' ? 'green' :row.status=='In Review' ? 'primary' : 'red'"  selected>{{row.status}} </mat-chip></mat-chip-list></td>
+            </ng-container>
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions</th>
+              <td mat-cell *matCellDef="let row"> 
+                <!-- Scrollable modal -->
+             
+                <button  (click)="getSingleIssue(row._id)" mat-icon-button color="primary"  data-bs-toggle="modal" data-bs-target="#staticBackdrop" >
+                  <mat-icon>visibility_on</mat-icon>
+                </button> 
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog" style="word-break: break-all;" align="center">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">{{this.singleIssue.title}}</h5>
+   <mat-chip  [style.background]="this.singleIssue.status== 'Open' ? 'green' :this.singleIssue.status=='In Review' ? 'primary' : 'red'"  selected>{{this.singleIssue.status}} </mat-chip>
+                      </div>
+                      <div class="modal-body">
+                <img src="https://angular-issue.herokuapp.com/{{this.singleIssue.image | slice:7:row.image.length}}" alt="image" style="height: 300px;width: 440px;padding: 10px;">   
+                       <h5 style="text-align: left;">{{this.singleIssue.description  }}</h5>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+             
+                <button  (click)="editIssue(row)" mat-icon-button color="primary" >
+                  <mat-icon>edit</mat-icon>
+                </button> 
+                 <button mat-icon-button (click)="deleteIssue(row._id)" color="warn" >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        
+       
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">No data Found "{{input.value}}"</td>
+            </tr>
+          </div>
+         
+        </table>
+      
+        <mat-paginator [pageSizeOptions]="[5, 10]" aria-label="Select page of users"></mat-paginator>
+      </div>
+      
+    </div>
+  </div>

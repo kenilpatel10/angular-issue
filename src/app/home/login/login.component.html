@@ -1,0 +1,22 @@
+
+<form [formGroup]="loginForm">
+    <h1>Log In</h1>
+    <mat-form-field appearance="outline">
+        <mat-label>Email Address</mat-label>
+        <input matInput [email]="true" formControlName="email" placeholder="Email Address">
+        <mat-icon matSuffix>person</mat-icon>
+       
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput  formControlName="password"  [type]="show ? 'text' : 'password'" placeholder="Password">
+        <mat-icon matSuffix *ngIf="this.show" (click)="password()">visibility_on</mat-icon>
+        <mat-icon matSuffix *ngIf="!this.show" (click)="password()">visibility_off</mat-icon>
+        <!-- <mat-error *ngIf="loginForm.controls['password'].dirty && loginForm.hasError('pattern','password')"> Minimum eight characters, at least one capital letter, one number and one special character</mat-error> -->
+   
+      </mat-form-field>
+    
+      <div  mat-dialog-action [align]="'end'">
+        <button  mat-raised-button color="warn"  (click)="loginUser()">Log In</button>
+      </div>
+</form>

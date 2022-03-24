@@ -1,0 +1,42 @@
+
+<form [formGroup]="issueForm" (ngSubmit)="addIssue(issueForm.value)" enctype="multipart/form-data"> 
+  <div>
+    <h2>{{heading}}</h2>
+    <mat-form-field appearance="outline">
+    <mat-label>Enter Your Issue Title</mat-label>
+    <input matInput maxLength="40" formControlName="title"  placeholder="Issue Title">
+    <mat-icon matSuffix>assignment_late</mat-icon>
+    <mat-hint>Hint</mat-hint>
+  </mat-form-field> 
+  <mat-form-field appearance="outline">
+    <mat-label>Enter Description </mat-label>
+  <textarea   formControlName="description" matInput></textarea>
+    <mat-icon matSuffix>assignment</mat-icon>
+    <mat-hint>Hint</mat-hint>
+  </mat-form-field>  
+  <hr/>
+  <mat-radio-group  formControlName="status" aria-label="Select an option">
+    <mat-radio-button value="Open">Open</mat-radio-button>
+    <mat-radio-button value="In Review">In Review</mat-radio-button>
+    <mat-radio-button value="Closed">Closed</mat-radio-button>
+  </mat-radio-group>
+
+<hr/>
+<mat-form-field appearance="outline">
+  <mat-label>Image</mat-label>
+  <input matInput maxLength="40" readonly formControlName="image"  placeholder="Image">
+  <mat-icon matSuffix>image</mat-icon>
+</mat-form-field> 
+  <input (change)="onFileSelect($event)" accept="image/*" name="image" type="file" >
+<div *ngIf="imageData">
+<img style="height: 100px;width: 100px;" [src]="imageData" alt="image">
+</div>
+
+  <div mat-dialog-action [align]="'end'">
+    <button  mat-raised-button color="warn">{{actionBtn}}</button>
+    
+  </div>
+   </div>
+  </form>
+ 
+ 
